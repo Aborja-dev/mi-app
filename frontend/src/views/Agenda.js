@@ -2,41 +2,67 @@ import { useEffect, useState } from 'react'
 import { Display } from '../components/Display'
 import { Form } from '../components/Form'
 import { Searcher } from '../components/Searcher'
+import { createContact, deleteContact, getAllContacts, updateContact } from '../services/agendaGateway'
 
 export const Agenda = () => {
-   const [contactos, setContactos] = useState([
-      { name: 'Arto Hellas' }
-   ])
+   const [contactos, setContactos] = useState([ ])
    const [search, setSearch] = useState('')
-   const submitContact = (newContact) => {
-      contactRepeat(newContact, 'name')
-         ? alertError(`El nombre ${newContact.name} ya existe`)
-         : addContacto(newContact)
+   let newContact = {}
+   useEffect( ()=>{
+      getAll()
+   },[])
+   
+   const getAll = async ()=>{
+     const contacts = await getAllContacts()
+     setContactos(contacts)
    }
-   const addContacto = (newContact) => {
-      const contacts = contactos.concat(newContact)
-      setContactos(contacts)
+   const submitContact = (evtValue) => {
+      newContact = evtValue
+      contactRepeat(newContact, 'name')
+         ? windowConfirm(newContact)
+         : add()
+   }
+   const add = async () => {
+      const response = await createContact(newContact)
+      const newContactList = contactos.concat(response)
+      setContactos(newContactList)
+   }
+   const update = async ()=>{
+      const id = searchId(newContact.name);
+      const response = await updateContact(newContact, id)
+      const newContactList = contactos.map((contact)=> contact.id===response.id?response:contact)
+      setContactos(newContactList)
+   }
+   const windowConfirm = (newContact)=>{
+      const confirm = window.confirm(`Desea actualizar ${newContact.name}`)
+      if (confirm) {
+         update()
+      }
+   }
+   const deleteC = async (deleteId)=>{
+      deleteContact(deleteId)
+      const newContactList = contactos.filter(({id})=>id!==deleteId)
+      setContactos(newContactList)
+   }
+   const searchId = (nameFind)=>{
+      const findContact = contactos.find(({name}) => name === nameFind) 
+      return findContact?.id || null
    }
    const contactRepeat = (contact, value) => {
-      const repeat = contactos.find((element) => element[value] === contact[value])
-      return repeat ? true : false
-   }
-   const alertError = (message) => {
-      alert(message)
+      return contactos.some((element) => element[value] === contact[value])
    }
    const searchName = (searchValue, searchProp)=>{
       const filterList = contactos.filter((element) => {
          return element[searchProp].includes(searchValue)
       })
       return filterList
-      
    }
    const filteredContacts = searchName(search, 'name');
    return (
       <>
          <Searcher onSearch={ (e)=>{ setSearch(e) } }/>
          <Form onSubmit={ (e)=>{ submitContact(e) } }/>
-         <Display contactsList={filteredContacts}/>
+         <Display deleteId={(e)=>deleteC(e)} contactsList={filteredContacts}/>
       </>
    )
 }

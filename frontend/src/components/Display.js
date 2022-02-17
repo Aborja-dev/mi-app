@@ -1,6 +1,6 @@
 import { DisplayItem } from "../shared/DisplayItem"
 
-export const Display = ({ contactsList }) => {
+export const Display = ({ contactsList, deleteId }) => {
 
    return (
       <>
@@ -11,7 +11,7 @@ export const Display = ({ contactsList }) => {
                   ? 'No se encontraron contactos'
                   : <ul>
                      {
-                        contactsList.map((el) => <DisplayItem key={el.name} contact={el}/>)
+                        contactsList.map((el) => <DisplayItem onDelete={(e)=>deleteId(e)} key={el.name} contact={el}/>)
                      }
                   </ul>
             }

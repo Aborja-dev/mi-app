@@ -1,7 +1,13 @@
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 
-export const Input = ({ label, changeValue }) => {
+export const Input = ({ label, changeValue, isSubmit }) => {
    const [valueInput, setValueInput] = useState('')
+   useEffect(()=>{
+      clear()
+   }, [isSubmit])
+   const clear = ()=>{
+      setValueInput('')
+   }
    const change = (value)=>{
       setValueInput(value)
       changeValue(value)
