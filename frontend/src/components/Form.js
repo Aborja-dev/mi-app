@@ -19,8 +19,8 @@ export const Form = ({onSubmit}) => {
             <form onSubmit={(e) => { submitContact(e) }}>
                <Input label={'Nombre'} isSubmit={submitted} changeValue={ (e)=>{newContact.name=e.trim()} }/>
                <Input label={'Número'} isSubmit={submitted} changeValue={ (e)=>{newContact.number=e.trim()} }/>
-               <div>
-                  <button type='submit'>Agregar</button>
+               <div className="py-2 col-12">
+                  <button className="btn-sm btn-primary float-end" type='submit'>Agregar</button>
                </div>
             </form>
          </section>

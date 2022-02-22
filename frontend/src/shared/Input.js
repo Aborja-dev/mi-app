@@ -13,10 +13,9 @@ export const Input = ({ label, changeValue, isSubmit }) => {
       changeValue(value)
    }
    return (
-      <>
-         <div>
-            {label}: <input type="text" value={valueInput} onChange={(e) => { change(e.target.value) }} />
-         </div>
-      </>
+      <div className='form-group'>
+            <label className='form-label fs-3 fst-italic'>{label}</label>
+            <input className='form-control' type="text" value={valueInput} onChange={(e) => { change(e.target.value) }} />
+      </div>
    )
 }

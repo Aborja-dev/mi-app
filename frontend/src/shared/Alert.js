@@ -1,10 +1,10 @@
 export const Alert = ({message, type}) => {
    const typesAlert = {
-      alert: '#00aa00',
-      error: '#ee0000',
-      warning: '#aaaa00'
+      alert: 'alert-info',
+      error: 'alert-danger',
+      warning: 'alert-warning'
    }
-   const color = typesAlert[type] || '#000000'
+   const color = typesAlert[type] || 'alert-primary'
    const _style = {
       background: '#ddd',
       padding:'20px',
@@ -17,8 +17,8 @@ export const Alert = ({message, type}) => {
       return null
     }
    return (
-      <>
-         <p style={_style}>{message}</p>
-      </>
+      <div className="m-2">
+         <p className={`alert ${color}`}>{message}</p>
+      </div>
    )
 }

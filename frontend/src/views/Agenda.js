@@ -68,7 +68,7 @@ export const Agenda = () => {
       })
       setTimeout(()=>{
         setErrorMessage(null) 
-      },1000)
+      },1500)
    }
    const searchId = (nameFind)=>{
       const findContact = contactos.find(({name}) => name === nameFind) 
@@ -85,12 +85,18 @@ export const Agenda = () => {
    }
    const filteredContacts = searchName(search, 'name');
    return (
-      <>
+      <div className='card col-8 pb-2 bg-secondary bg-opacity-25 container' style={{marginTop: '5rem'}}>
          <Alert message={errorMessage?.message} type={errorMessage?.type}></Alert>
          <Searcher onSearch={ (e)=>{ setSearch(e) } }/>
-         <Form onSubmit={ (e)=>{ submitContact(e) } }/>
-         <Display deleteId={(e)=>deleteC(e)} contactsList={filteredContacts}/>
-      </>
+         <div className="card-body row">
+            <article className="col-4">
+               <Form onSubmit={ (e)=>{ submitContact(e) } }/>
+            </article>
+            <article className="col-8">
+               <Display deleteId={(e)=>deleteC(e)} contactsList={filteredContacts}/>
+            </article>
+         </div>
+      </div>
    )
 }
 

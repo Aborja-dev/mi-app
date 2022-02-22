@@ -9,7 +9,7 @@ export const Display = ({ contactsList, deleteId }) => {
             {
                contactsList.length === 0
                   ? 'No se encontraron contactos'
-                  : <ul>
+                  : <ul className="list-group">
                      {
                         contactsList.map((el) => <DisplayItem onDelete={(e)=>deleteId(e)} key={el.name} contact={el}/>)
                      }

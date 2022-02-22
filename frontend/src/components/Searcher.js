@@ -5,10 +5,8 @@ export const Searcher = ({onSearch}) => {
       console.log(evt);
    }
    return (
-      <>
-         <section>
+      <section className='p-1'>
             <Input label={'Buscar'} changeValue={ (e)=>onSearch(e)}/>
-         </section>
-      </>
+      </section>
    )
 }
