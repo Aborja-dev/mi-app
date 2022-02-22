@@ -21,6 +21,6 @@ export const updateContact = (body,id)=>{
 
 export const deleteContact = (id)=>{
   return axios
-    .get(`${api.url}/persons/${id}`)
+    .delete(`${api.url}/persons/${id}`)
     .then(response=>response.data)
 }
