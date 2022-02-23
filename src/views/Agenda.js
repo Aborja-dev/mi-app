@@ -34,10 +34,11 @@ export const Agenda = () => {
       setContactos(newContactList)
    }
    const update = async ()=>{
-      const id = searchId(newContact.name);
+      const finded = findContact(newContact.name);
       showAlert(`Se ha actualizado ${newContact.number}`, 'alert')
-      const response = await updateContact(newContact, id)
-      const newContactList = contactos.map((contact)=> contact.id===response.id?response:contact)
+      await updateContact(newContact, finded.id)
+      newContact['id'] = finded.id
+      const newContactList = contactos.map((contact)=> contact.id===finded.id?newContact:contact)
       setContactos(newContactList)
    }
    const windowConfirm = (newContact)=>{
@@ -50,7 +51,7 @@ export const Agenda = () => {
       try {
          await deleteContact(deleteId)
          const newContactList = contactos.filter(({id})=>id!==deleteId)
-         showAlert(`El contacto se ha borrado`, 'error')
+         showAlert(`El contacto se ha borrado`, 'alert')
          setContactos(newContactList)
       } catch (error) {
          if(error.response.status === 404){
@@ -70,9 +71,9 @@ export const Agenda = () => {
         setErrorMessage(null) 
       },1500)
    }
-   const searchId = (nameFind)=>{
-      const findContact = contactos.find(({name}) => name === nameFind) 
-      return findContact?.id || null
+   const findContact = (nameFind)=>{
+      const find = contactos.find(({name}) => name === nameFind) 
+      return find || null
    }
    const contactRepeat = (contact, value) => {
       return contactos.some((element) => element[value] === contact[value])
