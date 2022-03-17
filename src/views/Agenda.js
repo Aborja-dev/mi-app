@@ -3,12 +3,14 @@ import { Display } from '../components/Display'
 import { Form } from '../components/Form'
 import { Searcher } from '../components/Searcher'
 import { createContact, deleteContact, getAllContacts, updateContact } from '../services/agendaGateway'
+import { Service } from '../services/contactService'
 import { Alert } from '../shared/Alert'
 
 export const Agenda = () => {
    const [contactos, setContactos] = useState([])
    const [search, setSearch] = useState('')
    const [errorMessage, setErrorMessage] = useState(null)
+   const service = new Service(contactos)
    let newContact = {}
    useEffect( ()=>{
       getAll()
@@ -23,7 +25,7 @@ export const Agenda = () => {
    }
    const submitContact = (evtValue) => {
       newContact = evtValue
-      contactRepeat(newContact, 'name')
+      service.contactRepeat(newContact, 'name')
          ? windowConfirm(newContact)
          : add()
    }
@@ -34,7 +36,7 @@ export const Agenda = () => {
       setContactos(newContactList)
    }
    const update = async ()=>{
-      const finded = findContact(newContact.name);
+      const finded = service.findContact(newContact.name);
       showAlert(`Se ha actualizado ${newContact.number}`, 'alert')
       await updateContact(newContact, finded.id)
       newContact['id'] = finded.id
@@ -71,20 +73,7 @@ export const Agenda = () => {
         setErrorMessage(null) 
       },1500)
    }
-   const findContact = (nameFind)=>{
-      const find = contactos.find(({name}) => name === nameFind) 
-      return find || null
-   }
-   const contactRepeat = (contact, value) => {
-      return contactos.some((element) => element[value] === contact[value])
-   }
-   const searchName = (searchValue, searchProp)=>{
-      const filterList = contactos.filter((element) => {
-         return element[searchProp].includes(searchValue)
-      })
-      return filterList
-   }
-   const filteredContacts = searchName(search, 'name');
+   const filteredContacts = service.searchName(search, 'name');
    return (
       <>
          <Alert message={errorMessage?.message} type={errorMessage?.type}></Alert>

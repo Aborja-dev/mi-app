@@ -1,17 +1,10 @@
-import { getAllContacts } from "./agendaGateway"
-
 export class Service {
    contactos = []
-   constructor (){
-      getAllContacts().then( data=>{
-         this.contactos = data
-      })
+   constructor(contactos){
+      this.contactos = contactos
    }
    setContactArray(arr){
       this.contactos = arr
-   }
-   getContactArray(){
-      return this.contactos
    }
    searchId = (nameFind)=>{
       const findContact = this.contactos.find(({name}) => name === nameFind) 
